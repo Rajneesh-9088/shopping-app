@@ -8,7 +8,9 @@ const seedDB = require('./seed');
 mongoose.connect('mongodb://localhost:27017/shopping-app', 
 {    
      useNewUrlParser: true,
-     useUnifiedTopology: true
+     useUnifiedTopology: true,
+     useFindAndModify: false,
+     useCreateIndex: true
 }).then(()=>{console.log("DB Connected")})
 .catch((err)=>{console.log(err)});
 
@@ -17,20 +19,6 @@ mongoose.connect('mongodb://localhost:27017/shopping-app',
 // Routes
 const productRoutes = require('./routes/productRoutes') ;
 app.use(express.json()); // parse incoming body
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

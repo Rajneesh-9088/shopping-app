@@ -14,7 +14,7 @@ router.get('/products', async (req,res)=>{
     }
    
 })
-
+// Create a new product
 router.post('/products', async(req,res)=>{
 
  const product =  await Product.create(req.body);
@@ -23,12 +23,33 @@ router.post('/products', async(req,res)=>{
 
 
 })
-
+// show a particular product
 router.get('/products/:id', async(req,res)=>{
     const product = await Product.findById(req.params.id);
     res.json(product);
 })
 
+// getting a product data to edit
+router.get('/products/:id/edit', async(req,res)=>{
+
+    const product = await Product.findById(req.params.id);
+    res.json(product);
+})
+
+// patch route
+
+router.patch('/products/:id', async(req,res)=>{
+
+  const product =   await Product.findByIdAndUpdate(req.params.id,req.body);
+  res.json(product);
+
+})
+
+// delete product
+router.delete('/products/:id', async(req,res)=>{
+    await Product.findByIdAndDelete(req.params.id);
+    res.json("deleted");
+})
 
 
 
