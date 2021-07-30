@@ -1,6 +1,7 @@
 const express = require('express');
 const router  = express.Router();
 const Product = require('../models/product');
+const Review = require('../models/review');
 
 
 router.get('/products', async (req,res)=>{
@@ -49,6 +50,29 @@ router.patch('/products/:id', async(req,res)=>{
 router.delete('/products/:id', async(req,res)=>{
     await Product.findByIdAndDelete(req.params.id);
     res.json("deleted");
+})
+
+// create a review for a product
+
+
+router.post('/products/:id/review', async(req,res)=>{
+    try{
+         const product = await Product.findById(req.params.id);
+
+         const review = new Review({
+             ...req.body
+         })
+
+         product.reviews.push(review)
+
+         await review.save()
+         await product.save()
+
+         res.status(200).json(product)
+    }
+    catch(e){
+       res.send("Error while creating a review")
+    }
 })
 
 
