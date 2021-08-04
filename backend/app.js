@@ -3,6 +3,8 @@ const app = express();
 const mongoose = require('mongoose');
 const Product = require('./models/product');
 const seedDB = require('./seed');
+require('dotenv').config();
+const cookieParser = require('cookie-parser');
 
 
 mongoose.connect('mongodb://localhost:27017/shopping-app', 
@@ -17,8 +19,14 @@ mongoose.connect('mongodb://localhost:27017/shopping-app',
   //   seedDB();
 
 // Routes
+const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes') ;
-app.use(express.json()); // parse incoming body
+
+
+app.use(express.json()); 
+app.use(cookieParser());// parse incoming body
+app.use(authRoutes);
+app.use(productRoutes);
 
 
 
