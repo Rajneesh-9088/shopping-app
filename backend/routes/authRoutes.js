@@ -42,7 +42,16 @@ router.post('/register',async (req,res)=>{
 
          const savedUser = await newUser.save();
 
-         res.status(200).json(savedUser);
+         // log the user in with signIn only
+         const token = jwt.sign({
+             user: savedUser._id,
+         },process.env.JWT_SECRET);
+
+         res.cookie('token', token, {
+             httpOnly: true
+         })
+
+         res.status(200).send("Registered Successfully");
          
     }
     catch (e){
@@ -88,7 +97,7 @@ router.post('/login',async(req,res)=>{
             sameSite: "none"
         });
 
-        res.send("User LoggedIn(sent u a user token");
+        res.send("User LoggedIn(sent you a user token");
 
    }
    catch(e){
@@ -106,7 +115,7 @@ router.get('/logout', (req,res)=>{
         sameSite: "none"
     })
 
-    res.status(200).send("Logged Out Successfully");
+    res.status(200).send("LoggedOut  Successfully");
 })
 
 // verify user is loggedIN or not
