@@ -3,6 +3,9 @@ const router = express.Router();
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const {isLoggedIn} = require('../middleware');
+const Product = require('../models/product');
+
 
 
 
@@ -130,6 +133,52 @@ router.get('/loggedIn' , (req,res)=>{
          console.err(err);
          res.status(200).json(false);
      }
+})
+
+// User Cart End Points
+
+// to get the current user's cart
+router.get('/user/cart',isLoggedIn, async(req,res)=>{
+
+   try{
+    const userId = req.user;
+
+    const user = await User.findById(userId).populate('cart');
+    
+    res.status(200).json(user.cart)
+   } catch(e){
+       console.log(e.message);
+       res.status(400).json();
+   }
+     
+})
+
+// to add the item in cart
+router.post('/user/cart/add', isLoggedIn, async(req,res)=>{
+      
+  try{
+
+    const {productId} = req.body;
+
+    const product = await Product.findById(productId);
+
+    const userId = req.user;
+
+    const user = await User.findById(userId);
+
+    user.cart.push(product);
+
+    await user.save();
+
+    res.status(200).json("Added To Cart Successfully");
+
+
+  }
+  catch(e){
+    console.log(e.message);
+    res.status(400).json();
+  }
+
 })
 
 
