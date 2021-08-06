@@ -7,7 +7,7 @@ require('dotenv').config();
 const cookieParser = require('cookie-parser');
 
 
-mongoose.connect('mongodb://localhost:27017/shopping-app', 
+mongoose.connect(process.env.MONGO_URI, 
 {    
      useNewUrlParser: true,
      useUnifiedTopology: true,
@@ -16,7 +16,7 @@ mongoose.connect('mongodb://localhost:27017/shopping-app',
 }).then(()=>{console.log("DB Connected")})
 .catch((err)=>{console.log(err)});
 
-  //   seedDB();
+    // seedDB();
 
 // Routes
 const authRoutes = require('./routes/authRoutes');
