@@ -181,6 +181,27 @@ router.post('/user/cart/add', isLoggedIn, async(req,res)=>{
 
 })
 
+router.post('/user/cart/remove',isLoggedIn, async(req,res)=>{
+
+    try{
+        const {productid} = req.body;
+
+        const userid = req.user;
+   
+        const user = await User.findByIdAndUpdate(userid,{$pull: {cart:productid}});
+
+       
+
+        res.status(200).json("Removed Successfully");
+
+    } catch(e){
+        console.log(e.message) ;
+        res.status(400).send("Cannot Remove from Cart");
+    }
+
+
+})
+
 
 
 
